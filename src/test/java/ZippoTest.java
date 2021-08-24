@@ -68,8 +68,18 @@ public class ZippoTest {
                 .log().body()
 
                 ;
+    }
 
+    @Test
+    public void checkStateInResponseBody() {
 
+        given()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .body("country", equalTo("United States")) //body.country nin verilen degere esitligini kontrol
+                ;
 
     }
 
