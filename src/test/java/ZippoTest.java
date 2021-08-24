@@ -33,6 +33,8 @@ public class ZippoTest {
                         .then()
                         .log().body() // log.all() --> tum bilgileri yazar. body sadece body icindeki
 
+                        .statusCode(200) // status kontrolu
+
 
 
 
