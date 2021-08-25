@@ -108,13 +108,12 @@ public class ZippoTest {
                 .get("http://api.zippopotam.us/us/90210")
                 .then()
                 .log().body()
-                .body("places.state", hasItem("California")) //butun statelerde aranan eleman var mi diye kontrol
+                .body("places.state", hasItem("California")) 
                 .statusCode(200)
 
         ;
 
     }
-
 
     @Test
     public void bodyJsonPathTest3() {
@@ -142,7 +141,7 @@ public class ZippoTest {
                 .body("places", hasSize(1)) //verilen pathdeki listin size kontrolu
                 .statusCode(200)
 
-                ;
+        ;
 
 
     }
@@ -159,7 +158,56 @@ public class ZippoTest {
                 .body("places.state", hasItem("California"))
                 .body("places[0].'place name'", equalTo("Beverly Hills"))
                 .statusCode(200)
+        ;
+    }
+
+    @Test
+    public void pathParameterTest() {
+
+        String country = "us";
+        String zipCode = "90210";
+
+        given()
+                .pathParam("country", country)
+                .pathParam("zipCode", zipCode)
+                .log().uri() //request linki
+
+                .when()
+                .get("http://api.zippopotam.us/{country}/{zipCode}")
+
+
+                .then()
+                .log().body()
+                .body("places", hasSize(1))
+
                 ;
     }
+
+    @Test
+    public void pathParameterTest2() {
+
+        String country = "us";
+
+
+        for (int i = 90210; i <90220 ; i++) {
+            String zipCode = String.valueOf(i);
+
+            given()
+                    .pathParam("country", country)
+                    .pathParam("zipCode", zipCode)
+                    .log().uri() //request linki
+
+                    .when()
+                    .get("http://api.zippopotam.us/{country}/{zipCode}")
+
+
+                    .then()
+                    .log().body()
+                    .body("places", hasSize(1))
+
+            ;
+        }
+    }
+
 
 }
