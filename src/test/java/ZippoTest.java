@@ -79,7 +79,39 @@ public class ZippoTest {
                 .then()
                 .log().body()
                 .body("country", equalTo("United States")) //body.country nin verilen degere esitligini kontrol
-                ;
+                .statusCode(200)
+
+        ;
+
+    }
+
+    @Test
+    public void checkStateResponseBody() {
+
+        given()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .body("places[0].state", equalTo("California")) //body.country nin verilen degere esitligini kontrol
+                .statusCode(200)
+
+        ;
+
+    }
+
+    @Test
+    public void bodyJsonPathHasItem() {
+
+        given()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .body("places.state", hasItem("California")) //butun statelerde aranan eleman var mi diye kontrol
+                .statusCode(200)
+
+        ;
 
     }
 
