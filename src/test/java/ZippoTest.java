@@ -1,4 +1,5 @@
 
+import io.restassured.http.ContentType;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.*;
@@ -11,6 +12,7 @@ public class ZippoTest {
 
         given()
                 //Hazirlik islemlerini yapacagiz
+
                 .when()
                 //link ve aksiyon islemleri
 
@@ -19,4 +21,98 @@ public class ZippoTest {
         ;
 
     }
+
+    @Test
+    public void statusCodeTest() {
+
+        given()
+
+
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+
+                        .then()
+                        .log().body() // log.all() --> tum bilgileri yazar. body sadece body icindeki
+
+                        .statusCode(200) // status kontrolu
+
+        ;
+
+    }
+
+    @Test
+    public void contentTypeTest() {
+
+        given()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .contentType(ContentType.JSON) //icerik tipi JSON formatinda mi geliyor.
+
+                ;
+
+
+    }
+
+    @Test
+    public void logTest() {
+
+        given()
+
+                .log().all()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+
+                .then()
+                .log().body()
+
+                ;
+    }
+
+    @Test
+    public void checkStateInResponseBody() {
+
+        given()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .body("country", equalTo("United States")) //body.country nin verilen degere esitligini kontrol
+                .statusCode(200)
+
+        ;
+
+    }
+
+    @Test
+    public void checkStateResponseBody() {
+
+        given()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .body("places[0].state", equalTo("California")) //body.country nin verilen degere esitligini kontrol
+                .statusCode(200)
+
+        ;
+
+    }
+
+    @Test
+    public void bodyJsonPathHasItem() {
+
+        given()
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .body("places.state", hasItem("California")) //butun statelerde aranan eleman var mi diye kontrol
+                .statusCode(200)
+
+        ;
+
+    }
+
 }
