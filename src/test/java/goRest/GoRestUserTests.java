@@ -106,11 +106,14 @@ public class GoRestUserTests {
     @Test(dependsOnMethods = "createUser")
     public void updateUserById() {
 
+        String name = "ronaldinho";
+
         given()
                 .header("Authorization","Bearer 54ebff1f3eaae83df05e4caa0b1939cd48b48139e915c550a7c8cdf10fc2b364")
                 .pathParam("userID", userID)
                 .contentType(ContentType.JSON)
-                .body("{\"name\":\"ronaldinhho\"}")
+                .log().uri()
+                .body("{\"name\":\""+name+"\"}")
 
                 .when()
                 .put("https://gorest.co.in/public/v1/users/{userID}")
@@ -118,6 +121,7 @@ public class GoRestUserTests {
                 .then()
                 .log().body()
                 .statusCode(200)
+                .body("data.name", equalTo(name))
 
         ;
 
