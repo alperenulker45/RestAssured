@@ -3,12 +3,15 @@ package goRest;
 import POJO.Todo;
 import goRest.Model.User;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -72,6 +75,69 @@ public class GoRestUserTests {
                 .statusCode(201)
                 .extract().jsonPath().getInt("data.id")
                 ;
+
+        System.out.println("userID = " + userID);
+
+    }
+
+    @Test
+    public void createUserBodyMap() {
+
+        Map<String, String> newUser = new HashMap<>();
+        newUser.put("name", "alperen");
+        newUser.put("gender", "male");
+        newUser.put("email", getRandomEmail());
+        newUser.put("status", "active");
+
+        userID =
+                given()
+                        .header("Authorization","Bearer 54ebff1f3eaae83df05e4caa0b1939cd48b48139e915c550a7c8cdf10fc2b364")
+                        .contentType(ContentType.JSON)
+                        .body(newUser)
+
+
+                        .when()
+                        .post("https://gorest.co.in/public/v1/users")
+
+
+
+                        .then()
+                        .log().body()
+                        .statusCode(201)
+                        .extract().jsonPath().getInt("data.id")
+        ;
+
+        System.out.println("userID = " + userID);
+
+    }
+
+    @Test
+    public void createUserBodyObject() {
+
+        User newUser = new User();
+        newUser.setName("alperen");
+        newUser.setGender("male");
+        newUser.setEmail(getRandomEmail());
+        newUser.setStatus("active");
+
+        userID =
+                given()
+                        .header("Authorization","Bearer 54ebff1f3eaae83df05e4caa0b1939cd48b48139e915c550a7c8cdf10fc2b364")
+                        .contentType(ContentType.JSON)
+                        .body(newUser)
+                        .log().body()
+
+
+                        .when()
+                        .post("https://gorest.co.in/public/v1/users")
+
+
+
+                        .then()
+                        .log().body()
+                        .statusCode(201)
+                        .extract().jsonPath().getInt("data.id")
+        ;
 
         System.out.println("userID = " + userID);
 
@@ -170,8 +236,35 @@ public class GoRestUserTests {
 
         ;
 
+    }
+
+    @Test
+    public void responseSample() {
+
+        Response response = //gelen sonuclarin hepsi Response tipindeki tek bir degiskene atandi.
+
+        given()
+
+                .when()
+                .get("https://gorest.co.in/public/v1/users")
 
 
+                .then()
+                .log().body()
+                .extract().response()
+
+                ;
+        //gelen sonucu Response degiskeninden almak istedigimiz tip degiskene atayabiliriz.
+        List<User> userList = response.jsonPath().getList("data", User.class);
+        int total = response.jsonPath().getInt("meta.pagination.total");
+        int limit = response.jsonPath().getInt("meta.pagination.limit");
+        User firstUser = response.jsonPath().getObject("data[0]", User.class);
+
+
+        System.out.println("userList = " + userList);
+        System.out.println("total = " + total);
+        System.out.println("limit = " + limit);
+        System.out.println("firstUser = " + firstUser);
 
     }
 
