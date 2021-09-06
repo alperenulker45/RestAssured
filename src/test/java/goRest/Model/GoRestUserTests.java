@@ -1,4 +1,4 @@
-package goRest;
+package goRest.Model;
 
 import POJO.Todo;
 import goRest.Model.User;
