@@ -84,7 +84,7 @@ public class GoRestUserTests {
 
     }
 
-    @Test(dependsOnMethods = "createUser")
+    @Test(dependsOnMethods = "createUser", priority = 1)
     public void getUserById() {
 
         given()
@@ -103,7 +103,7 @@ public class GoRestUserTests {
 
     }
 
-    @Test(dependsOnMethods = "createUser")
+    @Test(dependsOnMethods = "createUser", priority = 2)
     public void updateUserById() {
 
         String name = "ronaldinho";
@@ -124,6 +124,53 @@ public class GoRestUserTests {
                 .body("data.name", equalTo(name))
 
         ;
+
+
+    }
+
+    @Test(dependsOnMethods = "createUser", priority = 3)
+    public void deleteUserById() {
+
+        given()
+                .header("Authorization","Bearer 54ebff1f3eaae83df05e4caa0b1939cd48b48139e915c550a7c8cdf10fc2b364")
+                .pathParam("userID", userID)
+                .contentType(ContentType.JSON)
+                .log().uri()
+
+
+                .when()
+                .delete("https://gorest.co.in/public/v1/users/{userID}")
+
+
+                .then()
+                .statusCode(204)
+                .log().body()
+
+                ;
+
+
+    }
+
+    @Test(dependsOnMethods ="deleteUserById")
+    public void deleteUserByIdNegative() {
+        given()
+                .header("Authorization","Bearer 54ebff1f3eaae83df05e4caa0b1939cd48b48139e915c550a7c8cdf10fc2b364")
+                .pathParam("userID", userID)
+                .contentType(ContentType.JSON)
+                .log().uri()
+
+
+                .when()
+                .delete("https://gorest.co.in/public/v1/users/{userID}")
+
+
+                .then()
+                .statusCode(404)
+
+
+        ;
+
+
 
 
     }
