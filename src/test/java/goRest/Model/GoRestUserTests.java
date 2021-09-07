@@ -1,21 +1,17 @@
 package goRest.Model;
 
-import POJO.Todo;
-import goRest.Model.User;
+import goRest.Model.POJO.User;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
-import org.testng.annotations.Test;
 
 public class GoRestUserTests {
 

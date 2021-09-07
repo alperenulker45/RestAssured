@@ -1,4 +1,4 @@
-package goRest.Model;
+package goRest.Model.POJO;
 
 public class Comments {
 
