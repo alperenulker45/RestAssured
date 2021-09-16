@@ -158,7 +158,7 @@ public class countryTest {
 
                 .then()
                 .log().body()
-                .statusCode(200)// jenkins icin bilincli olarak 404 - 200 yapildi
+                .statusCode(404)
         ;
 
 
