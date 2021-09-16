@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Jenkins Basqar Test Suite">
+    <test name="Main Basqar Test">
+        <classes>
+            <class name="basqar.countryTest"></class>
+        </classes>
+    </test>
+</suite>
